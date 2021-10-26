@@ -3,6 +3,10 @@
 *.d.ts
 node_modules
 
+.idea
+
+package-lock.json
+
 # CDK asset staging directory
 .cdk.staging
 cdk.out
