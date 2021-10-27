@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import {CfnParameter, Construct, Duration, RemovalPolicy, Stack, StackProps} from "@aws-cdk/core";
 import {Repository} from '@aws-cdk/aws-codecommit';
 import {Topic} from '@aws-cdk/aws-sns';

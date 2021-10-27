@@ -22,7 +22,18 @@ Finally, be sure to set the AWS_REGION/AWS_DEFAULT_REGION environment variables 
 
 Once this is all done, the following is a sample command you can use to deploy this infrastructure:
 
-`cdk deploy --parameters templateRepoName=REPO_NAME --parameters templateRepoEnableNotifications=TRUE|FALSE --parameters sourceRoleArn=SOURCE_ROLE_ARN`
+`cdk deploy -c projectName=PROJECT_NAME --parameters templateRepoName=REPO_NAME --parameters templateRepoEnableNotifications=TRUE|FALSE --parameters sourceRoleArn=SOURCE_ROLE_ARN`
+
+### Environment Variables
+* AWS_DEFAULT_REGION
+* AWS_ACCESS_KEY_ID
+* AWS_SECRET_ACCESS_KEY
+* CDK_DEFAULT_ACCOUNT
+* AWS_SESSION_TOKEN
+** Not required, but best practice to connect to AWS within a session
+* PROJECT_NAME
+** Not required, use in lieu of the context flag.  If neither context flag nor environment variable is set, CDK will supply a random string to ensure stack uniqueness.
+** Unique stack names will not ensure successful deployments.  Resource conflicts will still exist if you do not change the CodeCommit repository name.
 
 ### Parameters
 * templateRepoName ==> Name of the repository to create.
@@ -49,3 +60,5 @@ the role we just created by deploying this stack.  We are allowed to do this bec
 i.e. the role we use for BAU tasks.  
 
 Note, the role we are assuming is a CodeCommit Power User with a 60 minute session duration.  Least privileged access is not currently enforced.
+
+One final note, this project deploys stacks with Termination Protection enabled.
