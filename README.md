@@ -28,3 +28,24 @@ Once this is all done, the following is a sample command you can use to deploy t
 * templateRepoName ==> Name of the repository to create.
 * templateRepoEnableNotifications ==> Enable SNS Notifications for the repository.
 * sourceRoleArn ==> The role you will use to assume the CodeCommit repository's management role.
+
+## Next Steps
+Now, we modify the `~/.aws/config` file.  We need to create a local profile that will assume our new role and permit the CodeCommit actions we want to take.
+The changes to this file should look similar to the below
+```text
+[profile PROFILE_NAME]
+role_arn = ARN_OF_CREATED_ROLE
+source_profile = ARN_OF_SOURCE_ROLE
+role_session_name = CodeCommitSession
+```
+Once we've made those changes, we can navigate to the CodeCommit repository in the AWS Console.  Copy the HTTPS (GRC) URL from the repository
+in the AWS Console and set this URL as the upstream for the repository you are trying to store on AWS CodeCommit. 
+
+Be sure to modify this URL by injecting the PROFILE_NAME into the HTTPS (GRC) URL.  The intial URL starts like `codecommit::AWS_REGION://REPO_NAME`
+and ends like `codecommit::AWS_REGION://PROFILE_NAME@REPO_NAME`.
+
+This simple change tells the `git-remote-codecommit` process to assume the local profile.  The `~/.aws/config` file maps the local profile to
+the role we just created by deploying this stack.  We are allowed to do this because we configured this new role to be assumed by our "source role", 
+i.e. the role we use for BAU tasks.  
+
+Note, the role we are assuming is a CodeCommit Power User with a 60 minute session duration.  Least privileged access is not currently enforced.
